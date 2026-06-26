@@ -1,6 +1,6 @@
 --- a/sapi/micro/php_micro_fileinfo.c
 +++ b/sapi/micro/php_micro_fileinfo.c
-@@ -752,7 +752,12 @@ const char *micro_get_filename(void) {
+@@ -752,7 +752,12 @@
      static char *self_filename = NULL;
      if (NULL == self_filename) {
          self_filename = malloc(PATH_MAX);
