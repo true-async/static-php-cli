@@ -13,6 +13,9 @@ ext-async:
     - libuv
     - ext-sockets
   php-extension:
+    # The module registers itself as "true_async", not "async", so the
+    # post-build `php --ri` smoke test must look it up under that name.
+    display-name: true_async
     os:
       - Linux
       - Darwin
