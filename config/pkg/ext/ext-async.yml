@@ -1,0 +1,9 @@
+ext-async:
+  type: php-extension
+  depends:
+    - libuv
+    - ext-sockets
+  php-extension:
+    os:
+      - Linux
+      - Darwin
