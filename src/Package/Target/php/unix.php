@@ -61,6 +61,17 @@ trait unix
         if (self::getPHPVersionID() >= 80300 && self::getPHPVersionID() < 80400) {
             SourcePatcher::patchFile('spc_fix_avx512_cache_before_80400.patch', $this->getSourceDir());
         }
+
+        // Guard PHP snprintf/vsnprintf macros from poisoning libc++ std:: usage
+        // (std::snprintf/std::vsnprintf) in C++ extension TUs such as intl, which
+        // breaks under the zig libc++ toolchain. EOL-agnostic string replace.
+        foreach (['snprintf', 'vsnprintf'] as $fn) {
+            FileSystem::replaceFileStr(
+                "{$package->getSourceDir()}/main/snprintf.h",
+                "#define {$fn} ap_php_{$fn}",
+                "#ifndef __cplusplus\n#define {$fn} ap_php_{$fn}\n#endif"
+            );
+        }
     }
 
     #[BeforeStage('php', [self::class, 'configureForUnix'], 'php')]
