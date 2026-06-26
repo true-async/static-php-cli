@@ -92,6 +92,12 @@ trait unix
         $args = [];
         $version_id = self::getPHPVersionID();
 
+        // PHP 8.6+ ships a newer libtool that rejects the obsolete --with-pic
+        // option. PIC is already enforced via -fPIC in CFLAGS, so drop it.
+        if ($version_id >= 80600) {
+            $cmd = str_replace(' --with-pic', '', (string) $cmd);
+        }
+
         // disable undefined behavior sanitizer when opcache JIT is enabled (Linux only)
         if (SystemTarget::getTargetOS() === 'Linux' && !$package->getBuildOption('disable-opcache-jit', false)) {
             if ($version_id >= 80500 || $installer->isPackageResolved('ext-opcache')) {
