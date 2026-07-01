@@ -2,10 +2,10 @@ ext-clickhouse:
   type: php-extension
   artifact:
     source:
-      type: ghtar
-      repo: iliaal/php_clickhouse
+      type: git
+      url: 'https://github.com/true-async/php-clickhouse.git'
+      rev: main
       extract: php-src/ext/clickhouse
-      prefer-stable: true
     metadata:
       license-files: [LICENSE]
       license: PHP-3.01

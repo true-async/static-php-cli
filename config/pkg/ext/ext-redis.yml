@@ -2,8 +2,10 @@ ext-redis:
   type: php-extension
   artifact:
     source:
-      type: pecl
-      name: redis
+      type: git
+      url: 'https://github.com/true-async/phpredis.git'
+      rev: true-async
+      extract: php-src/ext/redis
     metadata:
       license-files: [LICENSE]
       license: PHP-3.01
