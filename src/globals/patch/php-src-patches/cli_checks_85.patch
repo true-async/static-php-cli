@@ -90,11 +90,11 @@ index 21b6840a..05a7aa8e 100644
  	) {		php_sqlite3_error(db_obj, 0, "Not supported in multithreaded Web servers");
  		RETURN_FALSE;
 diff --git a/ext/standard/php_fopen_wrapper.c b/ext/standard/php_fopen_wrapper.c
-index ea33ba49..083184b8 100644
+index 90a48d15962..07a14d5d632 100644
 --- a/ext/standard/php_fopen_wrapper.c
 +++ b/ext/standard/php_fopen_wrapper.c
-@@ -242,7 +242,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
- 			}
+@@ -270,7 +270,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
+ 				"URL file-access is disabled in the server configuration");
  			return NULL;
  		}
 -		if (!strcmp(sapi_module.name, "cli")) {
@@ -102,7 +102,7 @@ index ea33ba49..083184b8 100644
  			static int cli_in = 0;
  			fd = STDIN_FILENO;
  			if (cli_in) {
-@@ -258,7 +258,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
+@@ -286,7 +286,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
  		pipe_requested = 1;
  #endif
  	} else if (!strcasecmp(path, "stdout")) {
@@ -111,7 +111,7 @@ index ea33ba49..083184b8 100644
  			static int cli_out = 0;
  			fd = STDOUT_FILENO;
  			if (cli_out++) {
-@@ -274,7 +274,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
+@@ -302,7 +302,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
  		pipe_requested = 1;
  #endif
  	} else if (!strcasecmp(path, "stderr")) {
@@ -120,15 +120,15 @@ index ea33ba49..083184b8 100644
  			static int cli_err = 0;
  			fd = STDERR_FILENO;
  			if (cli_err++) {
-@@ -295,7 +295,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
+@@ -323,7 +323,7 @@ static php_stream * php_stream_url_wrap_php(php_stream_wrapper *wrapper, const c
  		zend_long  fildes_ori;
  		int		   dtablesize;
  
 -		if (strcmp(sapi_module.name, "cli")) {
 +		if (strcmp(sapi_module.name, "cli") && strcmp(sapi_module.name, "micro")) {
- 			if (options & REPORT_ERRORS) {
- 				php_error_docref(NULL, E_WARNING, "Direct access to file descriptors is only available from command-line PHP");
- 			}
+ 			php_stream_wrapper_warn(wrapper, context, options,
+ 				Disabled,
+ 				"Direct access to file descriptors is only available from command-line PHP");
 diff --git a/ext/standard/proc_open.c b/ext/standard/proc_open.c
 index 690e23e0..80ab3d32 100644
 --- a/ext/standard/proc_open.c
