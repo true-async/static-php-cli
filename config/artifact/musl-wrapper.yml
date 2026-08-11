@@ -1,2 +1,3 @@
 musl-wrapper:
   source: 'https://musl.libc.org/releases/musl-1.2.5.tar.gz'
+  source-mirror: 'https://distfiles.macports.org/musl/musl-1.2.5.tar.gz'
